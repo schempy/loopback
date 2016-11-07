@@ -131,7 +131,7 @@ describe.onServer('Remote Methods', function() {
 
   describe('Model.create(data, callback)', function() {
     it('creates model', function(done) {
-      var anObject = { first: 'June' };
+      var anObject = {first: 'June'};
       request(app)
         .post('/users')
         // sends an object
@@ -149,7 +149,7 @@ describe.onServer('Remote Methods', function() {
     // coercion being done on strong-remoting side
     it('creates array of models', function(done) {
       var arrayOfObjects = [
-        { first: 'John' }, { first: 'Jane' },
+        {first: 'John'}, {first: 'Jane'},
       ];
       request(app)
         .post('/users')
@@ -193,10 +193,10 @@ describe.onServer('Remote Methods', function() {
     it('Updates when a Model instance is retreived from data source', function(done) {
       var taskEmitter = new TaskEmitter();
       taskEmitter
-        .task(User, 'create', { first: 'jill', second: 'pill' })
-        .task(User, 'create', { first: 'bob', second: 'sob' })
+        .task(User, 'create', {first: 'jill', second: 'pill'})
+        .task(User, 'create', {first: 'bob', second: 'sob'})
         .on('done', function() {
-          User.upsertWithWhere({ second: 'pill' }, { second: 'jones' }, function(err, user) {
+          User.upsertWithWhere({second: 'pill'}, {second: 'jones'}, function(err, user) {
             if (err) return done(err);
             var id = user.id;
             User.findById(id, function(err, user) {
@@ -211,9 +211,9 @@ describe.onServer('Remote Methods', function() {
     it('Creates when no Model instance is retreived from data source', function(done) {
       var taskEmitter = new TaskEmitter();
       taskEmitter
-        .task(User, 'create', { first: 'simon', second: 'somers' })
+        .task(User, 'create', {first: 'simon', second: 'somers'})
         .on('done', function() {
-          User.upsertWithWhere({ first: 'somers' }, { first: 'Simon' }, function(err, user) {
+          User.upsertWithWhere({first: 'somers'}, {first: 'Simon'}, function(err, user) {
             if (err) return done(err);
             var id = user.id;
             User.findById(id, function(err, user) {
@@ -361,7 +361,7 @@ describe.onServer('Remote Methods', function() {
       // invoke save
       request(app)
         .post('/users')
-        .send({ data: { first: 'foo', last: 'bar' }})
+        .send({data: {first: 'foo', last: 'bar'}})
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function(err, res) {
@@ -775,8 +775,8 @@ describe.onServer('Remote Methods', function() {
     it('emits a `remoteMethodDisabled` event from disableRemoteMethodByName', function() {
       var app = loopback();
       var model = PersistedModel.extend('TestModelForDisablingRemoteMethod');
-      app.dataSource('db', { connector: 'memory' });
-      app.model(model, { dataSource: 'db' });
+      app.dataSource('db', {connector: 'memory'});
+      app.model(model, {dataSource: 'db'});
 
       var callbackSpy = require('sinon').spy();
       var TestModel = app.models.TestModelForDisablingRemoteMethod;
