@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+'use strict';
 var async = require('async');
 var chai = require('chai');
 var describe = require('./util/describe');
@@ -40,10 +41,10 @@ describe('Model / PersistedModel', function() {
 
       User.attachTo(dataSource);
 
-      User.validatesUniquenessOf('email', { message: 'email is not unique' });
+      User.validatesUniquenessOf('email', {message: 'email is not unique'});
 
-      var joe = new User({ email: 'joe@joe.com' });
-      var joe2 = new User({ email: 'joe@joe.com' });
+      var joe = new User({email: 'joe@joe.com'});
+      var joe2 = new User({email: 'joe@joe.com'});
 
       joe.save(function() {
         joe2.save(function(err) {
@@ -58,7 +59,7 @@ describe('Model / PersistedModel', function() {
 
   describe('Model.attachTo(dataSource)', function() {
     it('Attach a model to a [DataSource](#data-source)', function() {
-      var MyModel = loopback.createModel('my-model', { name: String });
+      var MyModel = loopback.createModel('my-model', {name: String});
       var dataSource = loopback.createDataSource({
         connector: loopback.Memory,
       });
@@ -77,11 +78,11 @@ describe.onServer('Remote Methods', function() {
   var User, Post, dataSource, app;
 
   beforeEach(function() {
-    app = loopback({ localRegistry: true, loadBuiltinModels: true });
-    app.set('remoting', { errorHandler: { debug: true, log: false }});
+    app = loopback({localRegistry: true, loadBuiltinModels: true});
+    app.set('remoting', {errorHandler: {debug: true, log: false}});
 
     User = app.registry.createModel('user', {
-      id: { id: true, type: String, defaultFn: 'guid' },
+      id: {id: true, type: String, defaultFn: 'guid'},
       'first': String,
       'last': String,
       'age': Number,
@@ -94,17 +95,17 @@ describe.onServer('Remote Methods', function() {
     });
 
     Post = app.registry.createModel('post', {
-      id: { id: true, type: String, defaultFn: 'guid' },
+      id: {id: true, type: String, defaultFn: 'guid'},
       title: String,
       content: String,
     }, {
       trackChanges: true,
     });
 
-    dataSource = app.dataSource('db', { connector: 'memory' });
+    dataSource = app.dataSource('db', {connector: 'memory'});
 
-    app.model(User, { dataSource: 'db' });
-    app.model(Post, { dataSource: 'db' });
+    app.model(User, {dataSource: 'db'});
+    app.model(Post, {dataSource: 'db'});
 
     User.hasMany(Post);
 
@@ -118,11 +119,11 @@ describe.onServer('Remote Methods', function() {
 
     User.remoteMethod('login', {
       accepts: [
-        { arg: 'username', type: 'string', required: true },
-        { arg: 'password', type: 'string', required: true },
+        {arg: 'username', type: 'string', required: true},
+        {arg: 'password', type: 'string', required: true},
       ],
-      returns: { arg: 'sessionId', type: 'any', root: true },
-      http: { path: '/sign-in', verb: 'get' },
+      returns: {arg: 'sessionId', type: 'any', root: true},
+      http: {path: '/sign-in', verb: 'get'},
     });
 
     app.use(loopback.rest());
@@ -169,11 +170,11 @@ describe.onServer('Remote Methods', function() {
   describe('Model.destroyAll(callback)', function() {
     it('Delete all Model instances from data source', function(done) {
       (new TaskEmitter())
-        .task(User, 'create', { first: 'jill' })
-        .task(User, 'create', { first: 'bob' })
-        .task(User, 'create', { first: 'jan' })
-        .task(User, 'create', { first: 'sam' })
-        .task(User, 'create', { first: 'suzy' })
+        .task(User, 'create', {first: 'jill'})
+        .task(User, 'create', {first: 'bob'})
+        .task(User, 'create', {first: 'jan'})
+        .task(User, 'create', {first: 'sam'})
+        .task(User, 'create', {first: 'suzy'})
         .on('done', function() {
           User.count(function(err, count) {
             User.destroyAll(function() {
@@ -258,7 +259,7 @@ describe.onServer('Remote Methods', function() {
     it('Call the findById with filter.fields using HTTP / REST', function(done) {
       request(app)
         .post('/users')
-        .send({ first: 'x', last: 'y' })
+        .send({first: 'x', last: 'y'})
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function(err, res) {
@@ -284,7 +285,7 @@ describe.onServer('Remote Methods', function() {
     it('Call the findById with filter.include using HTTP / REST', function(done) {
       request(app)
         .post('/users')
-        .send({ first: 'x', last: 'y' })
+        .send({first: 'x', last: 'y'})
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function(err, res) {
@@ -294,7 +295,7 @@ describe.onServer('Remote Methods', function() {
           assert(userId);
           request(app)
             .post('/users/' + userId + '/posts')
-            .send({ title: 'T1', content: 'C1' })
+            .send({title: 'T1', content: 'C1'})
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function(err, res) {
@@ -332,7 +333,7 @@ describe.onServer('Remote Methods', function() {
       // invoke save
       request(app)
         .post('/users')
-        .send({ data: { first: 'foo', last: 'bar' }})
+        .send({data: {first: 'foo', last: 'bar'}})
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function(err, res) {
@@ -392,7 +393,7 @@ describe.onServer('Remote Methods', function() {
       // invoke save
       request(app)
         .post('/users')
-        .send({ data: { first: 'foo', last: 'bar' }})
+        .send({data: {first: 'foo', last: 'bar'}})
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function(err, res) {
@@ -447,7 +448,7 @@ describe.onServer('Remote Methods', function() {
         // invoke save
         request(app)
           .post('/users')
-          .send({ data: { first: 'foo', last: 'bar' }})
+          .send({data: {first: 'foo', last: 'bar'}})
           .expect('Content-Type', /json/)
           .expect(200)
           .end(function(err, res) {
@@ -479,7 +480,7 @@ describe.onServer('Remote Methods', function() {
         // invoke save
         request(app)
           .post('/users')
-          .send({ data: { first: 'foo', last: 'bar' }})
+          .send({data: {first: 'foo', last: 'bar'}})
           .expect('Content-Type', /json/)
           .expect(200)
           .end(function(err, res) {
@@ -495,20 +496,20 @@ describe.onServer('Remote Methods', function() {
 
   describe('Model.hasMany(Model)', function() {
     it('Define a one to many relationship', function(done) {
-      var Book = dataSource.createModel('book', { title: String, author: String });
-      var Chapter = dataSource.createModel('chapter', { title: String });
+      var Book = dataSource.createModel('book', {title: String, author: String});
+      var Chapter = dataSource.createModel('chapter', {title: String});
 
       // by referencing model
       Book.hasMany(Chapter);
 
-      Book.create({ title: 'Into the Wild', author: 'Jon Krakauer' }, function(err, book) {
+      Book.create({title: 'Into the Wild', author: 'Jon Krakauer'}, function(err, book) {
         // using 'chapters' scope for build:
-        var c = book.chapters.build({ title: 'Chapter 1' });
-        book.chapters.create({ title: 'Chapter 2' }, function() {
+        var c = book.chapters.build({title: 'Chapter 1'});
+        book.chapters.create({title: 'Chapter 2'}, function() {
           c.save(function() {
-            Chapter.count({ bookId: book.id }, function(err, count) {
+            Chapter.count({bookId: book.id}, function(err, count) {
               assert.equal(count, 2);
-              book.chapters({ where: { title: 'Chapter 1' }}, function(err, chapters) {
+              book.chapters({where: {title: 'Chapter 1'}}, function(err, chapters) {
                 assert.equal(chapters.length, 1);
                 assert.equal(chapters[0].title, 'Chapter 1');
 
@@ -525,8 +526,8 @@ describe.onServer('Remote Methods', function() {
     it('Normalized properties passed in originally by loopback.createModel()', function() {
       var props = {
         s: String,
-        n: { type: 'Number' },
-        o: { type: 'String', min: 10, max: 100 },
+        n: {type: 'Number'},
+        o: {type: 'String', min: 10, max: 100},
         d: Date,
         g: loopback.GeoPoint,
       };
@@ -635,7 +636,7 @@ describe.onServer('Remote Methods', function() {
     function shouldReturn(methodName, expectedAccessType) {
       describe(methodName, function() {
         it('should return ' + expectedAccessType, function() {
-          var remoteMethod = { name: methodName };
+          var remoteMethod = {name: methodName};
           assert.equal(
             User._getAccessTypeForMethod(remoteMethod),
             expectedAccessType
@@ -712,8 +713,8 @@ describe.onServer('Remote Methods', function() {
     it('includes all aliases', function() {
       var app = loopback();
       var model = PersistedModel.extend('PersistedModelForAliases');
-      app.dataSource('db', { connector: 'memory' });
-      app.model(model, { dataSource: 'db' });
+      app.dataSource('db', {connector: 'memory'});
+      app.model(model, {dataSource: 'db'});
 
       // this code is used by loopback-sdk-angular codegen
       var metadata = app.handler('rest')
@@ -760,8 +761,8 @@ describe.onServer('Remote Methods', function() {
     it('emits a `remoteMethodDisabled` event', function() {
       var app = loopback();
       var model = PersistedModel.extend('TestModelForDisablingRemoteMethod');
-      app.dataSource('db', { connector: 'memory' });
-      app.model(model, { dataSource: 'db' });
+      app.dataSource('db', {connector: 'memory'});
+      app.model(model, {dataSource: 'db'});
 
       var callbackSpy = require('sinon').spy();
       var TestModel = app.models.TestModelForDisablingRemoteMethod;
@@ -791,11 +792,11 @@ describe.onServer('Remote Methods', function() {
     beforeEach(function setup() {
       app = loopback();
       TestModel = loopback.createModel('TestModelForGetApp'); // unique name
-      app.dataSource('db', { connector: 'memory' });
+      app.dataSource('db', {connector: 'memory'});
     });
 
     it('calls the callback when already attached', function(done) {
-      app.model(TestModel, { dataSource: 'db' });
+      app.model(TestModel, {dataSource: 'db'});
       TestModel.getApp(function(err, a) {
         if (err) return done(err);
 
@@ -814,7 +815,7 @@ describe.onServer('Remote Methods', function() {
 
         done();
       });
-      app.model(TestModel, { dataSource: 'db' });
+      app.model(TestModel, {dataSource: 'db'});
       // fails on time-out when not implemented correctly
     });
   });
