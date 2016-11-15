@@ -4,14 +4,25 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
+var assert = require('assert');
 var async = require('async');
+<<<<<<< HEAD
 var chai = require('chai');
 var describe = require('./util/describe');
+=======
+var expect = require('chai').expect;
+>>>>>>> 97e496f... Post Miroslav Review 1
 var loopback = require('../');
 var ACL = loopback.ACL;
 var defineModelTestsWithDataSource = require('./util/model-tests');
 var PersistedModel = loopback.PersistedModel;
+<<<<<<< HEAD
 var sinonChai = require('sinon-chai');
+=======
+var Promise = require('bluebird');
+var TaskEmitter = require('strong-task-emitter');
+var request = require('supertest');
+>>>>>>> 97e496f... Post Miroslav Review 1
 
 var expect = chai.expect;
 chai.use(sinonChai);
