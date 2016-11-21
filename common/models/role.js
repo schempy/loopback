@@ -21,18 +21,6 @@ assert(RoleMapping, 'RoleMapping model must be defined before Role model');
  * @header Role object
  */
 module.exports = function(Role) {
-  // Workaround for https://github.com/strongloop/loopback/issues/292
-  Role.definition.rawProperties.created.default =
-  Role.definition.properties.created.default = function() {
-    return new Date();
-  };
-
-  // Workaround for https://github.com/strongloop/loopback/issues/292
-  Role.definition.rawProperties.modified.default =
-  Role.definition.properties.modified.default = function() {
-    return new Date();
-  };
-
   Role.resolveRelatedModels = function() {
     if (!this.userModel) {
       var reg = this.registry;

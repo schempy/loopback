@@ -284,7 +284,7 @@ describe('loopback.token(options)', function() {
       ' when enableDoubkecheck is true',
     function(done) {
       var token = this.token;
-      var app = loopback({localRegistry: true, loadBuiltinModels: true});
+      var app = loopback();
       app.use(function(req, res, next) {
         req.accessToken = null;
         next();
@@ -319,7 +319,7 @@ describe('loopback.token(options)', function() {
     function(done) {
       var token = this.token;
       var tokenStub = {id: 'stub id'};
-      var app = loopback({localRegistry: true, loadBuiltinModels: true});
+      var app = loopback();
       app.use(function(req, res, next) {
         req.accessToken = tokenStub;
 
@@ -440,7 +440,7 @@ describe('app.enableAuth()', function() {
   var app;
   beforeEach(function setupAuthWithModels() {
     app = loopback();
-    app.enableAuth({ dataSource: ds });
+    app.enableAuth({dataSource: ds});
   });
   beforeEach(createTestingToken);
 

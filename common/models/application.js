@@ -71,18 +71,6 @@ function generateKey(hmacKey, algorithm, encoding) {
  */
 
 module.exports = function(Application) {
-  // Workaround for https://github.com/strongloop/loopback/issues/292
-  Application.definition.rawProperties.created.default =
-  Application.definition.properties.created.default = function() {
-    return new Date();
-  };
-
-  // Workaround for https://github.com/strongloop/loopback/issues/292
-  Application.definition.rawProperties.modified.default =
-  Application.definition.properties.modified.default = function() {
-    return new Date();
-  };
-
   /*!
    * A hook to generate keys before creation
    * @param next
